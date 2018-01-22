@@ -19,16 +19,6 @@ dumpListImageUrl = [x['src'] for x in soup.findAll('img', attrs={'alt':'course i
 dumpListPrice = [x.get_text() for x in soup.findAll('span', attrs={'data-purpose':'search-course-card-discount-price'})]
 dumpListUrl = ["http://www.udemy.com" + x['href'] for x in soup.findAll('a', attrs={'data-purpose':'search-course-card-title'})]
 
-
 for i in range(len(dumpListNames)):
-
-    print(dumpListNames[i], "\t" ,
-          dumpListRatings[i], "\t",
-          dumpListStars[i], "\t",
-          dumpListImageUrl[i], "\t",
-          dumpListSummary[i], "\t",
-          dumpListPrice[i], "\t",
-          dumpListUrl[i], "\t"
-          )
-
+    dumpListDict[dumpListNames[i]] = [dumpListNames[i], dumpListRatings[i], dumpListStars[i], dumpListImageUrl[i], dumpListSummary[i], dumpListPrice[i], dumpListUrl[i]]
 browser.close()
