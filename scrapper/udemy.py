@@ -3,10 +3,12 @@ import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-url = "http://www.udemy.com/courses/search/?q=python&src=ukw"
-browser = webdriver.Chrome("/Users/oguz298/Downloads/chromedriver")
+query = "python"
+
+url = "http://www.udemy.com/courses/search/?q={}&src=ukw".format(query)
+browser = webdriver.Chrome()
 browser.get(url)
-time.sleep(5)
+time.sleep(2)
 html = browser.page_source
 soup = BeautifulSoup(html, 'html.parser')
 dumpListDict = {}
@@ -20,5 +22,8 @@ dumpListPrice = [x.get_text() for x in soup.findAll('span', attrs={'data-purpose
 dumpListUrl = ["http://www.udemy.com" + x['href'] for x in soup.findAll('a', attrs={'data-purpose':'search-course-card-title'})]
 
 for i in range(len(dumpListNames)):
-    dumpListDict[dumpListNames[i]] = [dumpListNames[i], dumpListRatings[i], dumpListStars[i], dumpListImageUrl[i], dumpListSummary[i], dumpListPrice[i], dumpListUrl[i]]
+    #dumpListDict[dumpListNames[i]] = [dumpListNames[i], dumpListRatings[i], dumpListStars[i], dumpListImageUrl[i], dumpListSummary[i], dumpListPrice[i], dumpListUrl[i]]
+    dumpListDict[dumpListNames[i]] = {"title":dumpListNames[i], "rating":dumpListRatings[i], "thumbnail":dumpListImageUrl[i], "price":dumpListPrice[i], "url":dumpListUrl[i], "summary":dumpListSummary[i], "stars":dumpListStars[i]}
 browser.close()
+
+print(dumpListDict)
