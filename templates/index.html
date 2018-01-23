@@ -42,10 +42,18 @@
             </div>
           </div>
         </form>
-        <div class="result-container">
-          <div class="result"></div\>
-        </div>
-
+          <ul class="result-container">
+            {% for key,value in dictionaries.items %}
+            <li>
+              <a href="{{value.url}}" target="_blank">
+                <div class="result">
+                  <img src="{{value.thumbnail}}" alt="{{key}}">
+                  {{value.title}}
+                  <img src="{{value.site}}" alt="" width="32" height="32"></div\>
+            </li>
+            </a>
+            {% endfor %}
+          </ul>
       </div>
     </div>
     <script
@@ -53,6 +61,7 @@
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous"></script>
     <script src="{% static "js/bootstrap.js" %}" type="text/javascript"></script>
-    <script type="text/javascript" src="{% static "js/index.js" %}"></script>
+    <script src="{% static "js/index.js" %}" type="text/javascript"></script>
+
   </body>
 </html>

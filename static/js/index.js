@@ -14,7 +14,6 @@ $(document).ready(function(){
         $(".search-input").css({
             'margin':'20px auto 0 auto'
         });
-        console.log("hello");
     })
 
 });
