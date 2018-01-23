@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import random,string
@@ -12,7 +12,12 @@ edx = Edx()
 coursera = Coursera()
 
 def index(request):
-    z = {**coursera.search("python"), **edx.search("python")}
-    return render(request, 'index.html', { 'dictionaries':  z  })
+    if request.method == "POST":
+        print(request.POST)
+    elif request.method == "GET":
+        print(request.GET)
+    #z = {**coursera.search("python"), **edx.search("python")}
+    print("-#"*20)
+    return render(request, 'index.html', {  })
 
 
