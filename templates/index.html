@@ -47,9 +47,10 @@
             <li>
               <a href="{{value.url}}" target="_blank">
                 <div class="result">
-                  <img src="{{value.thumbnail}}" alt="{{key}}">
-                  {{value.title}}
-                  <img src="{{value.site}}" alt="" width="32" height="32"></div\>
+                  <img class="result-image" src="{{value.thumbnail}}" alt="{{key}}">
+                  <h3 class="result-title">{{value.title}}</h3>
+                  <div class="result-icon"><img src="{{value.site_logo}}" alt=""></div\>
+                </div>
             </li>
             </a>
             {% endfor %}

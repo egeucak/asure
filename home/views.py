@@ -7,7 +7,7 @@ def coursera(link):
     options.add_argument('headless')
     options.add_argument('window-size=1200x600')
     url = "https://www.coursera.org/courses?languages=en&query=python"
-    browser = webdriver.Chrome("/Users/administrator/Downloads/chromedriver", chrome_options=options)
+    browser = webdriver.Chrome(chrome_options=options)
     browser.get(url)
     html = browser.page_source
     soup = BeautifulSoup(html, 'html.parser')
@@ -23,7 +23,8 @@ def coursera(link):
         dumpListDict[dumpListNames[i]] = {"title": dumpListNames[i],
                                           "url": dumpListUrl[i],
                                           "thumbnail": dumpListImageUrl[i],
-                                          "site": "https://www.surfacedstudio.com/wordpress/wp-content/uploads/2018/01/Udemy-Icon.png"
+                                          "site_logo": "http://www.pvhc.net/img102/wimqmhowtqjoqdifgnlc.jpg",
+                                          "site": "coursera"
                                           }
     browser.close()
     return dumpListDict
