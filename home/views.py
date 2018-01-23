@@ -22,7 +22,8 @@ def coursera(link):
         dumpListDict[dumpListNames[i]] = {"title": dumpListNames[i],
                                           "url": dumpListUrl[i],
                                           "thumbnail": dumpListImageUrl[i],
-                                          "site": "courseara"
+                                          "site_logo": "http://www.pvhc.net/img102/wimqmhowtqjoqdifgnlc.jpg",
+                                          "site": "coursera"
                                           }
     browser.close()
 
