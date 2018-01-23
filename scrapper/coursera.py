@@ -1,9 +1,10 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from multiprocessing import Pipe, Process
 import json
 import string
 import os, time
-import signal
+from multiprocessing.dummy import Pool as ThreadPool
 
 
 pid = 0
@@ -11,38 +12,32 @@ options = webdriver.ChromeOptions()
 options.add_argument('headless')
 options.add_argument('window-size=1920x1080')
 browser = webdriver.Chrome(chrome_options=options)
+dumpListDict = {}
+
 
 def get_details(url):
     browser.get(url)
     html = browser.page_source
-    print(html)
     soup = BeautifulSoup(html, "html.parser")
-    print(soup)
     rating = soup.find_all(class_="ratings-text bt3-visible-xs")[0].get_text()
     rating = float(rating.split(" ")[0])*20
     rating = "{}/100".format(rating)
-    print(rating)
     summary = ":".join(soup.find_all(class_="body-1-text course-description")[0].get_text().split(":")[1:])[:197] + "..."
     price = "Free"
     temp = {"price":price, "rating":rating, "summary":summary}
     return temp
 
 def work(i, page):
-    print(i)
-    print("###")
-    global dumpListDict
     elems = page[i]
     elem = json.loads(elems['data-click-value'])
-    print(elem)
+    print("in work ->>",i)
+    ##
     type = elem['offeringType']
     if type =='specialization': return
     url = "https://www.coursera.org{}".format(elem['href'])
-    print(url)
     details = get_details(url)
-    print(details)
     price = details["price"]
     rating = details["rating"]
-    print("####")
     summary = details["summary"]
     thumnail = elems.find_all("img")[0]["src"]
     title = elems.find("h2").get_text()
@@ -56,14 +51,53 @@ def work(i, page):
                            "tags":tags,
                            "source":"coursera"
     }
-    print(dumpListDict)
+    print("in work ->",i)
+    print("dumplist -> ",dumpListDict)
 
-def fork(size, page):
-    for i in range(size):
-        pid = os.fork()
-        if (pid == 0):
-            work(i, page)
-            return
+# def fork(size, page):
+#     processes = {}
+#     if __name__ == '__main__':
+#         for i in range(size):
+#             parent_conn, child_conn = Pipe()
+#             p = Process(target=work, args=(child_conn, i, page,))
+#             processes[i] = {"child_conn": child_conn, "parent_conn": parent_conn, "process": p}
+#
+#             p.start()
+#             print("started process ->> ",i)
+#
+#         for i in range(size):
+#             print("recieve data ->>",i)
+#             print(processes[i]["parent_conn"].recv())  # prints "[42, None, 'hello']"
+#             print(" arrived ! ->> ",i)
+#             processes[i]["process"].join()
+
+def scrape(section):
+    try:
+        print("a")
+        global dumpListDict
+        elems = section
+        elem = json.loads(elems['data-click-value'])
+        type = elem['offeringType']
+        if type =='specialization': return
+        url = "https://www.coursera.org{}".format(elem['href'])
+        details = get_details(url)
+        price = details["price"]
+        rating = details["rating"]
+        summary = details["summary"]
+        thumbnail = elems.find_all("img")[0]["src"]
+        title = elems.find("h2").get_text()
+        tags = title.translate(string.punctuation).split(" ")
+        dumpListDict[title] = {"title":title,
+                           "url":url,
+                           "price":price,
+                           "rating":rating,
+                           "summary":summary,
+                           "thumbnail":thumbnail,
+                           "tags":tags,
+                           "source":"coursera"
+                           }
+    except:
+        i = 0
 
 query = "python"
 url = "https://www.coursera.org/courses?languages=en&query={}".format(query)
@@ -71,22 +105,33 @@ browser.get(url)
 
 html = browser.page_source
 soup = BeautifulSoup(html, 'html.parser')
-dumpListDict = {}
+#dumpListDict = {}
 
 page = soup.findAll(attrs={"name":"offering_card"})
-
+#print(page)
 num = len(page)
+start = time.time()
+print("STARTED !!!! ")
 
-fork(num, page)
+pool = ThreadPool(num)
+pool.map(scrape, page)
+pool.close()
+pool.join()
+#fork(2, page)
 print(dumpListDict)
+print(time.time()-start)
+
+
+
+
 
 #fork()
-if(pid!=0):
+'''if(pid!=0):
     os.waitpid(0, 0)
 
 else:
     #os.kill(os.getpid(), signal.SIGTERM)
-    exit()
+    exit()'''
 
 #
 # try:
