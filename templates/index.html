@@ -47,15 +47,18 @@
             <li>
               <a href="{{value.url}}" target="_blank">
                 <div class="result">
-                  <img src="{{value.thumbnail}}" alt="{{key}}">
-                  {{value.title}}
-                  <img src="{{value.site}}" alt="" width="32" height="32"></div\>
+                  <img class="result-image" src="{{value.thumbnail}}" alt="{{key}}">
+                  <h3 class="result-title">{{value.title}}</h3>
+                  <div class="result-icon"><img src="{{value.site_logo}}" alt=""></div\>
+                </div>
             </li>
             </a>
             {% endfor %}
           </ul>
       </div>
     </div>
+
+
     <script
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
