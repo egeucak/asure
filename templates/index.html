@@ -10,13 +10,13 @@
 
   </head>
   <body>
-    <div class="main-container">
-      <header class="header">
-        <a href="#">
-          <div class="main-icon"></div>
-        </a>
-      </header>
-      <div class="form-group search-input">
+  <div class="main-container">
+    <header class="header">
+      <a href="#">
+        <div class="main-icon"></div>
+      </a>
+    </header>
+    <div class="form-group search-input">
         <form action="">
           <input type="text" class="form-control" id="search-course" placeholder="Search Something...">
           <div>
@@ -42,10 +42,10 @@
             </div>
           </div>
         </form>
-          <ul class="result-container">
+      <ul class="result-container">
             {% for key,value in dictionaries.items %}
             <li>
-              <a href="{{value.url}}" target="_blank">
+              <a class="result-link" href="{{value.url}}" target="_blank">
                 <div class="result">
                   <img class="result-image" src="{{value.thumbnail}}" alt="{{key}}">
                   <h3 class="result-title">{{value.title}}</h3>
