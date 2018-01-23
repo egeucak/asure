@@ -7,7 +7,7 @@ def coursera(link):
     options.add_argument('headless')
     options.add_argument('window-size=1200x600')
     url = "https://www.coursera.org/courses?languages=en&query=python"
-    browser = webdriver.Chrome("/Users/administrator/Downloads/chromedriver", chrome_options=options)
+    browser = webdriver.Chrome(chrome_options=options)
     browser.get(url)
     html = browser.page_source
     soup = BeautifulSoup(html, 'html.parser')
