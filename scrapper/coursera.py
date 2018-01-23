@@ -2,7 +2,11 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import json
 import string
+import os, time
+import signal
 
+
+dumpListDict = {}
 options = webdriver.ChromeOptions()
 options.add_argument('headless')
 options.add_argument('window-size=1920x1080')
@@ -30,30 +34,52 @@ soup = BeautifulSoup(html, 'html.parser')
 dumpListDict = {}
 
 page = soup.findAll(attrs={"name":"offering_card"})
-dumpListDict = {}
-for elems in page:
-    elem = json.loads(elems['data-click-value'])
-    type = elem['offeringType']
-    if type=='specialization': continue
-    url = "https://www.coursera.org{}".format(elem['href'])
-    details = get_details(url)
-    price = details["price"]
-    rating = details["rating"]
-    summary = details["summary"]
-    #thumbnail
-    thumnail = elems.find_all("img")[0]["src"]
-    title = elems.find("h2").get_text()
-    tags = title.translate(string.punctuation).split(" ")
-    dumpListDict[title] = {"title":title,
-                           "url":url,
-                           "price":price,
-                           "rating":rating,
-                           "summary":summary,
-                           "thumbnail":thumnail,
-                           "tags":tags
-    }
 
+num = len(page)
+parent_pid=os.getpid()
+for i in range(len(page)):
+    pid = os.fork()
+    num = num - 1
+    if (pid==0):
+        break
+    if (num-1==i): os.kill(os.getpid(), signal.SIGKILL)
+if (os.getpid == 0): os.kill(os.getpid(), signal.SIGKILL)
+
+print(num)
+#time.sleep(20)
+
+try:
+    for elems in page[20]:
+        global dumpListDict
+        elem = json.loads(elems['data-click-value'])
+        type = elems['offeringType']
+        if type =='specialization': continue
+        url = "https://www.coursera.org{}".format(elems['href'])
+        details = get_details(url)
+        price = details["price"]
+        rating = details["rating"]
+        summary = details["summary"]
+        thumnail = elems.find_all("img")[0]["src"]
+        title = elems.find("h2").get_text()
+        tags = title.translate(string.punctuation).split(" ")
+        dumpListDict[title] = {"title":title,
+                               "url":url,
+                               "price":price,
+                               "rating":rating,
+                               "summary":summary,
+                               "thumbnail":thumnail,
+                               "tags":tags,
+                               "source":"coursera"
+        }
+        #print(dumpListDict)
+        if (os.getpid() != parent_pid): os.kill(os.getpid(), signal.SIGKILL)
+except Exception as e:
+    os.kill(os.getpid(), signal.SIGKILL)
+    print(e)
+
+time.sleep(5)
 print(dumpListDict)
+
 
 '''dumpListNames = [x.get_text(separator='\t').split("\t")[0] for x in soup.findAll('a', attrs={'name':'offering_card'})]
 dumpListImageUrl = [x['src'] for x in soup.findAll('img', attrs={'class':'offering-image'})]
