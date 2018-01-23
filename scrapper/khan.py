@@ -28,7 +28,7 @@ for i in soup.findAll(class_="gs-title"):
         print(urls)
         dumpListPrice.append("Free") #there is no price for khan
 
-        print(urls.findAll('a', attrs={'src': }))#image url
+        print(urls.findAll('a', attrs={'src'}))#image url
 
     count += 1
 
