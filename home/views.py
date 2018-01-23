@@ -1,14 +1,13 @@
 from django.shortcuts import render
 from bs4 import BeautifulSoup
 from selenium import webdriver
+options = webdriver.ChromeOptions()
+options.add_argument('headless')
+options.add_argument('window-size=1200x600')
+browser = webdriver.Chrome("/Users/oguz298/Downloads/chromedriver", chrome_options=options)
 
 def coursera(link):
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-    options.add_argument('window-size=1200x600')
-    url = "https://www.coursera.org/courses?languages=en&query=python"
-    browser = webdriver.Chrome("/Users/oguz298/Downloads/chromedriver", chrome_options=options)
-    browser.get(url)
+    browser.get(link)
     html = browser.page_source
     soup = BeautifulSoup(html, 'html.parser')
     dumpListDict = {}
@@ -26,6 +25,8 @@ def coursera(link):
                                           "site": "courseara"
                                           }
     browser.close()
+
+
     return dumpListDict
 
 def index(request):
