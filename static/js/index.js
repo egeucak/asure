@@ -8,7 +8,12 @@ $(document).ready(function(){
         else{
             $(".filter-container").css({"display":"none"});
             $(".glyphicon-filter").css({"transform":"rotate(0deg)"});
-
         }
     })
+    $(".glyphicon-search").on("click", function () {
+        $(".search-input").css({
+            'margin':'20px auto 0 auto'
+        });
+    })
+
 });
