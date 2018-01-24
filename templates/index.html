@@ -38,35 +38,37 @@
             </div>
           </div>
             <div>
+              <a href="javascript:NeedRatingList()" id="grabRating">
                 <div class="glyphicon glyphicon-search" type="submit">
                 </div>
+              </a>
             <div class="glyphicon glyphicon-filter"></div>
             </div>
         </form>
       <ul class="result-container">
-            {% for key,value in dictionaries.items %}
-            <li>
-              <a class="result-link" href="{{value.url}}" target="_blank">
-                <div class="result">
-                  <img class="result-image" src="{{value.thumbnail}}" alt="{{key}}">
-                  <div style="float: left; width: 65%">
-                    <h3 class="result-title">{{value.title}}</h3>
-                      <br><hr>
-                    <p class="result-summary">{{value.summary}}</p>
-                      <br>
-                      <b class="result-rating">{{ value.rating }} - {{ value.price }}</b>
-                  </div>
-                    <br>
-                  {%if value.source == "edx"%}
-                    <div class="result-icon"><img src="{{value.site_logo}}" alt=""></div>
-                  {%else%}
-                    <div class="result-icon"><img src="{{value.site_logo}}" alt=""></div>
-                  {%endif%}
-                </div>
-              </a>
-            </li>
-            {% endfor %}
-          </ul>
+        {% for key,value in dictionaries.items %}
+        <li>
+          <a class="result-link" href="{{value.url}}" target="_blank">
+            <div class="result">
+              <img class="result-image" src="{{value.thumbnail}}" alt="{{key}}">
+              <div class="result-content">
+                <h3 class="result-title">{{value.title}}</h3>
+                  <br><hr>
+                <p class="result-summary">{{value.summary}}</p>
+                  <br>
+                  <b class="result-rating">{{ value.rating }} - {{ value.price }}</b>
+              </div>
+                <br>
+              {%if value.source == "edx"%}
+                <div class="result-icon"><img src="{{value.site_logo}}" alt=""></div>
+              {%else%}
+                <div class="result-icon"><img src="{{value.site_logo}}" alt=""></div>
+              {%endif%}
+            </div>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
       </div>
     </div>
     <script

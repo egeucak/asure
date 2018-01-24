@@ -16,14 +16,3 @@ $(document).ready(function(){
         });
     })
 });
-
-// $(".result-link").on("click", function () {
-//     var frameURL = $(this).attr("href");
-//     $(".main-container").empty();
-//     $(".main-container").append(
-//         "<header class='main-icon'></header>" +
-//         "<iframe src='" +
-//         frameURL +
-//         "' frameborder='0' width='100%' height='100%'>" +
-//         "</iframe>");
-// });
