@@ -15,7 +15,7 @@ coursera = Coursera()
 youtube = Youtube()
 
 def order(z):
-    newDict = OrderedDict(sorted(z.items(), key=lambda t: t[1]["rating"].split("/")[0]), reversed=True)
+    newDict = OrderedDict(sorted(z.items(), key=lambda t: t[1]["rating"].split("/")[0]))
     return newDict
 
 def index(request):

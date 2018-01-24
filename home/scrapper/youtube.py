@@ -11,6 +11,7 @@ class Youtube:
 
     def search(self, query):
         browser = self.browser
+        site_logo = "https://www.youtube.com/yt/about/media/images/brand-resources/icons/YouTube-icon-our_icon.png"
         url = "https://www.youtube.com/results?search_query={}".format(query)
         browser.get(url)
         html = browser.page_source
@@ -27,6 +28,12 @@ class Youtube:
         dumpListPercentage = []
         dumpListDescriptionList = []
         dumpListThumbnailList = [x.find('img')['src'] for x in soup.findAll('yt-img-shadow', attrs={'class':'style-scope ytd-playlist-video-thumbnail-renderer no-transition'})]
+
+        for i in dumpListNames:
+            try:
+                a = dumpListThumbnailList[i]
+            except:
+                dumpListThumbnailList.append(site_logo)
 
 
         for i in dumpListUrl:
@@ -59,7 +66,7 @@ class Youtube:
                     dumpListDislike[-1] = str(int(dumpListDislike[-1]) * 1000)
 
         for i in range(len(dumpListLike)):
-            dumpListPercentage.append(str(100*(int(dumpListLike[i]) / (int(dumpListLike[i]) + int(dumpListDislike[i])))))
+            dumpListPercentage.append(str(int(100*(int(dumpListLike[i]) / (int(dumpListLike[i]) + int(dumpListDislike[i]))))) + "/100")
 
 
 
