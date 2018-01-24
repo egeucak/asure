@@ -26,17 +26,22 @@
             </div>
             <div class="right-filter">
               <input type="checkbox" value="edx" name="edx" checked="true"><div class="label-content">edx</div><br>
-              <input type="checkbox" value="youtube" name="youtube" checked="true"><div class="label-content">youtube</div>
+              <input type="checkbox" value="youtube" name="youtube"><div class="label-content">youtube</div>
             </div>
             <div class="right-filter">
               <input type="checkbox" value="coursera" name="coursera" checked="true"><div class="label-content">coursera</div> <br>
-              <input type="checkbox" value="udemy" name="udemy" checked="true"><div class="label-content">udemy</div><br>
+              <input type="checkbox" value="udemy" name="udemy"><div class="label-content">udemy</div>
+            </div>
+              <div class="right-filter">
+              <input type="checkbox" value="udacity" name="udacity"><div class="label-content">udacity</div> <br>
+              <input type="checkbox" value="lynda" name="lynda"><div class="label-content">lynda</div><br>
             </div>
           </div>
             <div>
-            <input type="submit" class="glyphicon glyphicon-search" name="search" >
+                <div class="glyphicon glyphicon-search" type="submit">
+                </div>
             <div class="glyphicon glyphicon-filter"></div>
-          </div>
+            </div>
         </form>
       <ul class="result-container">
             {% for key,value in dictionaries.items %}
@@ -44,17 +49,26 @@
               <a class="result-link" href="{{value.url}}" target="_blank">
                 <div class="result">
                   <img class="result-image" src="{{value.thumbnail}}" alt="{{key}}">
-                  <h3 class="result-title">{{value.title}}</h3>
-                  <div class="result-icon"><img src="{{value.site_logo}}" alt=""></div\>
+                  <div style="float: left; width: 65%">
+                    <h3 class="result-title">{{value.title}}</h3>
+                      <br><hr>
+                    <p class="result-summary">{{value.summary}}</p>
+                      <br>
+                      <b class="result-rating">{{ value.rating }} - {{ value.price }}</b>
+                  </div>
+                    <br>
+                  {%if value.source == "edx"%}
+                    <div class="result-icon"><img src="{{value.site_logo}}" alt=""></div>
+                  {%else%}
+                    <div class="result-icon"><img src="{{value.site_logo}}" alt=""></div>
+                  {%endif%}
                 </div>
+              </a>
             </li>
-            </a>
             {% endfor %}
           </ul>
       </div>
     </div>
-
-
     <script
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="

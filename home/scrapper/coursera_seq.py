@@ -35,28 +35,30 @@ class Coursera:
         page = soup.findAll(attrs={"name":"offering_card"})
 
         for i in range(len(page)):
-            elems = page[i]
-            elem = json.loads(elems['data-click-value'])
+            try:
+                elems = page[i]
+                elem = json.loads(elems['data-click-value'])
 
-            ##
-            type = elem['offeringType']
-            if type =='specialization': continue
-            url = "https://www.coursera.org{}".format(elem['href'])
-            details = self._get_details(url)
-            price = details["price"]
-            rating = details["rating"]
-            summary = details["summary"]
-            thumnail = elems.find_all("img")[0]["src"]
-            title = elems.find("h2").get_text()
-            tags = title.translate(string.punctuation).split(" ")
-            dumpListDict[title] = {"title":title,
-                                   "url":url,
-                                   "price":price,
-                                   "rating":rating,
-                                   "summary":summary,
-                                   "thumbnail":thumnail,
-                                   "tags":tags,
-                                   "source":"coursera"
-                                   }
-        browser.close()
+                type = elem['offeringType']
+                if type =='specialization': continue
+                url = "https://www.coursera.org{}".format(elem['href'])
+                details = self._get_details(url)
+                price = details["price"]
+                rating = details["rating"]
+                summary = details["summary"]
+                thumnail = elems.find_all("img")[0]["src"]
+                title = elems.find("h2").get_text()
+                tags = title.translate(string.punctuation).split(" ")
+                dumpListDict[title] = {"title":title,
+                                       "url":url,
+                                       "price":price,
+                                       "rating":rating,
+                                       "summary":summary,
+                                       "thumbnail":thumnail,
+                                       "tags":tags,
+                                       "source":"coursera",
+                                       "site_logo":"https://www.appsunveiled.com/wp-content/uploads/2017/03/Coursera-App.png"
+                                       }
+            except Exception as e:
+                print(e)
         return dumpListDict

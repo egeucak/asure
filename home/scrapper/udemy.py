@@ -6,7 +6,11 @@ from selenium import webdriver
 class Udemy:
     def search(self, query):
         url = "http://www.udemy.com/courses/search/?q={}&src=ukw".format(query)
-        browser = webdriver.Chrome()
+        options = webdriver.ChromeOptions()
+        options.add_argument('window-size=5x5')
+
+
+        browser = webdriver.Chrome(chrome_options=options)
         browser.get(url)
         time.sleep(2)
         html = browser.page_source
@@ -31,8 +35,8 @@ class Udemy:
                                               "price":dumpListPrice[i],
                                               "url":dumpListUrl[i],
                                               "summary":dumpListSummary[i],
-                                              "stars":dumpListStars[i],
-                                              "site":"udemy"}
-        browser.close()
-
+                                              "rating":dumpListStars[i],
+                                              "site":"udemy",
+                                              "site_logo":"https://about.udemy.com/wp-content/uploads/2017/10/NewUlogo-large-1.png"
+                                              }
         return dumpListDict

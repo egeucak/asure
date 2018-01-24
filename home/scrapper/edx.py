@@ -44,24 +44,27 @@ class Edx:
         elems = soup.find_all(class_="discovery-card course-card shadow verified")
         dumpListDict = {}
         for elem in elems:
-            title = elem.find("h3").get_text()
-            thumbnail = elem.find("img")["src"]
-            url = elem.find_all("a")[0].get("href")
-            source = "edx"
-            temp = self._getDetails(url)
+            try:
+                title = elem.find("h3").get_text()
+                thumbnail = elem.find("img")["src"]
+                url = elem.find_all("a")[0].get("href")
+                source = "edx"
+                temp = self._getDetails(url)
 
-            price = temp["price"]
-            summary = temp["summary"]
-            rating = temp["rating"]
-            tags = title.translate(string.punctuation).split(" ")
-            dumpListDict[title] = {"title": title,
-                                   "url": url,
-                                   "price": price,
-                                   "rating": rating,
-                                   "summary": summary,
-                                   "thumbnail": thumbnail,
-                                   "tags": tags,
-                                   "source": source
-                                   }
-        browser.close()
+                price = temp["price"]
+                summary = temp["summary"]
+                rating = "{}/100".format(temp["rating"])
+                tags = title.translate(string.punctuation).split(" ")
+                dumpListDict[title] = {"title": title,
+                                       "url": url,
+                                       "price": price,
+                                       "rating": rating,
+                                       "summary": summary,
+                                       "thumbnail": thumbnail,
+                                       "tags": tags,
+                                       "source": source,
+                                       "site_logo":"https://www.edx.org/sites/default/files/mediakit/image/thumb/edx_logo_200x200.png"
+                                       }
+            except Exception as e:
+                print(e)
         return dumpListDict
